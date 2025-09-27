@@ -1,6 +1,6 @@
 # E-commerce Olist
 
-![Project Banner](https://https://github.com/Nurkens/e-commerce-olist/blob/main/erdVis1.png) 
+![Project Banner](https://github.com/Nurkens/e-commerce-olist/blob/main/erdVis1.png) 
 
 ## Описание
 
@@ -30,11 +30,22 @@ pip install -r requirements.txt
 
 ## Как запустить
 
-1. Откройте Jupyter Notebook:
-   ```bash
-   jupyter notebook
-   ```
-2. Запустите ноутбуки в папке `notebooks/` или основной скрипт.
+1. Установить зависимости:
+
+pip install -r requirements.txt
+
+Настроить переменные окружения в .env:
+
+DB_USER=
+DB_PASSWORD=
+DB_HOST=
+DB_PORT=
+DB_NAME=
+
+Создать таблицы и загрузить данные:
+
+psql -U postgres -d dataVis -p 5433 -f database/create_tables.sql
+psql -U postgres -d dataVis -p 5433 -f database/import_data.sql
 
 ## Структура проекта
 
