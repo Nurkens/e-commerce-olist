@@ -1,0 +1,208 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Kazakhstan Weather Monitoring",
+    "tags": ["weather", "custom-exporter", "kazakhstan"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "City Filter",
+        "type": "row",
+        "panels": []
+      },
+      {
+        "id": 2,
+        "title": "Current Temperature by City",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "weather_temperature_celsius",
+            "legendFormat": "{{city}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-BlPu"
+            },
+            "unit": "celsius",
+            "decimals": 1
+          }
+        },
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 1}
+      },
+      {
+        "id": 3,
+        "title": "Temperature Trends",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "weather_temperature_celsius{city=~\"$city\"}",
+            "legendFormat": "{{city}} - Current",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 1},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "celsius"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "Humidity by City",
+        "type": "bargauge",
+        "targets": [
+          {
+            "expr": "weather_humidity_percent{city=~\"$city\"}",
+            "legendFormat": "{{city}}",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 8, "x": 0, "y": 9},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
+      {
+        "id": 5,
+        "title": "Wind Speed",
+        "type": "gauge",
+        "targets": [
+          {
+            "expr": "weather_windspeed_ms{city=~\"$city\"}",
+            "legendFormat": "{{city}}",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 8, "x": 8, "y": 9},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "m/s"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "title": "Pressure",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "weather_pressure_hpa{city=~\"$city\"}",
+            "legendFormat": "{{city}}",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 8, "x": 16, "y": 9},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "pressurehpa"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "title": "Cloud Coverage",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "weather_cloudcover_percent{city=~\"$city\"}",
+            "legendFormat": "{{city}}",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 8, "x": 0, "y": 17},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "title": "API Response Time",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "weather_api_response_time_seconds",
+            "legendFormat": "Response Time",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 8, "x": 8, "y": 17},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "title": "Temperature Min/Max",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "weather_temperature_celsius",
+            "legendFormat": "Current",
+            "refId": "A"
+          },
+          {
+            "expr": "weather_temperature_min_celsius",
+            "legendFormat": "Min",
+            "refId": "B"
+          },
+          {
+            "expr": "weather_temperature_max_celsius",
+            "legendFormat": "Max",
+            "refId": "C"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 8, "x": 16, "y": 17}
+      },
+      {
+        "id": 10,
+        "title": "Feels Like Temperature",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "weather_feels_like_celsius{city=~\"$city\"}",
+            "legendFormat": "{{city}} - Feels Like",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 25},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "celsius"
+          }
+        }
+      }
+    ],
+    "templating": {
+      "list": [
+        {
+          "name": "city",
+          "type": "query",
+          "query": "label_values(weather_temperature_celsius, city)",
+          "refresh": 1,
+          "includeAll": true,
+          "multi": true,
+          "allValue": ".*",
+          "datasource": "Prometheus"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-3h",
+      "to": "now"
+    }
+  },
+  "overwrite": true
+}
